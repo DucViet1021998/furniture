@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .main-left {
+    @apply bg-white py-3 pt-4 h-screen shadow-md fixed top-0 duration-300 left-0 z-[200];
+  }
+  .main-right {
+    @apply w-full duration-300;
+  }
+}
