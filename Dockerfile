@@ -12,7 +12,7 @@ ENV NODE_ENV $NEXT_ENVIRONMENT
 ENV NEXT_PUBLIC_ENV $NEXT_ENVIRONMENT
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY .env.production ./ 
+# COPY .env.production ./ 
 COPY . .
 
 RUN npm run build
