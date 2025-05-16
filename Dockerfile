@@ -1,23 +1,39 @@
-# 1️⃣ Sử dụng image Node.js chính thức (phiên bản mới nhất)
-FROM node:18-alpine
-
-# 2️⃣ Thiết lập thư mục làm việc trong container
+# Install dependencies only when needed
+FROM node:18-slim AS deps
 WORKDIR /app
-
-# 3️⃣ Copy file package.json và package-lock.json trước để tận dụng caching
 COPY package.json package-lock.json ./
 
-# 4️⃣ Cài đặt dependencies (chỉ cài production dependencies nếu cần)
-RUN npm install --frozen-lockfile
+RUN npm ci
 
-# 5️⃣ Copy toàn bộ mã nguồn vào container
+# Rebuild the source code only when needed
+FROM node:18-slim AS builder
+ARG NEXT_ENVIRONMENT
+ENV NODE_ENV $NEXT_ENVIRONMENT
+ENV NEXT_PUBLIC_ENV $NEXT_ENVIRONMENT
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY .env.production ./ 
 COPY . .
 
-# 6️⃣ Build ứng dụng Next.js
 RUN npm run build
 
-# 7️⃣ Lệnh mặc định khi container chạy
-CMD ["npm", "start"]
+# Production image, copy only necessary files
+FROM node:18-slim AS runner
+WORKDIR /app
 
-# 8️⃣ Cấu hình cổng chạy ứng dụng
-EXPOSE 3000
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy only necessary build files to production image
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+# COPY --from=builder /app/.env.production ./ 
+
+USER nextjs
+
+EXPOSE 3077
+ENV PORT 3077
+
+CMD ["npx", "next", "start", "-p", "3077"]

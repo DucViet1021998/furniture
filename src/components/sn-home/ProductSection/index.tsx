@@ -140,7 +140,7 @@ export const products: ProductCardProps[] = [
   {
     imgSrc:
       "https://cdn.media.amplience.net/i/shadesoflight/XU15023.0.XU15023BG?fmt=auto&w=675",
-    title: "Rattan ",
+    title: "Rattan",
     description: "Wingback Chair",
     price: 979,
     isNew: true,
