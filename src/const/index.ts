@@ -1,6 +1,6 @@
 import * as AppConstant from "./app.const";
 import * as PathConstant from "./path.const";
 import * as EnvConstant from "./env.const";
-import * as ApiConstant from "./api.const";
+import * as ApiConst from "./api.const";
 
-export { EnvConstant, PathConstant, AppConstant, ApiConstant };
+export { EnvConstant, PathConstant, AppConstant, ApiConst };

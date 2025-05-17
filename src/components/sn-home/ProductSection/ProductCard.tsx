@@ -2,6 +2,7 @@
 
 import { ShareIcon, CompareIcon, LikeIcon } from "@/components/icons";
 import { PRODUCT_DETAIL_PAGE } from "@/const/path.const";
+import { IProduct } from "@/models";
 import { FormatUtils } from "@/utils";
 import {
   Card,
@@ -16,33 +17,27 @@ import {
 import { useRouter } from "next/navigation";
 import { memo, ReactNode, useMemo } from "react";
 
-const ProductCard = ({
-  imgSrc,
-  imgAlt = "img-alt",
-  title,
-  description,
-  price,
-  sale,
-  isNew,
-}: ProductCardProps) => {
+const ProductCard = ({ data }: ProductCardProps) => {
   const router = useRouter();
 
   const productLabel = useMemo(() => {
-    if (sale) {
-      return { label: `${sale} %`, bgColor: "#E97171" };
-    } else if (isNew) {
+    if (data.salePercent) {
+      return { label: `${data.salePercent} %`, bgColor: "#E97171" };
+    } else if (data.isNew) {
       return { label: "New", bgColor: "#2EC1AC" };
     } else {
       return { label: null, bgColor: undefined };
     }
-  }, [sale, isNew]);
+  }, [data]);
 
   const discountedPrice = useMemo(() => {
-    return sale ? price - (price * sale) / 100 : price;
-  }, [price, sale]);
+    return data.salePercent
+      ? data.price - (data.price * Number(data.salePercent)) / 100
+      : data.price;
+  }, [data]);
 
   const handleClick = () => {
-    const path = PRODUCT_DETAIL_PAGE.replace("[id]", title);
+    const path = PRODUCT_DETAIL_PAGE.replace("[id]", data.name);
     router.push(path);
   };
 
@@ -50,6 +45,7 @@ const ProductCard = ({
     <Card
       sx={{
         maxWidth: 345,
+        height: "100%",
         position: "relative",
         "&:hover .MuiCardActionArea-root": {
           filter: "brightness(0.5)",
@@ -65,30 +61,48 @@ const ProductCard = ({
       }}
     >
       <CardActionArea onClick={handleClick}>
-        <CardMedia component="img" image={imgSrc} alt={imgAlt} />
-        <CardContent sx={{ bgcolor: "bg.gray" }}>
+        <Box
+          sx={{
+            height: 300,
+            overflow: "hidden",
+          }}
+        >
+          <CardMedia
+            component="img"
+            image={data.image}
+            alt={data.name}
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover", // ảnh sẽ fill toàn bộ Box
+              display: "block",
+            }}
+          />
+        </Box>
+
+        <CardContent>
           <Typography
             gutterBottom
             variant="h3"
             fontWeight={600}
             component="div"
           >
-            {title}
+            {data.name}
           </Typography>
           <Typography variant="h5" color="text.grey">
-            {description}
+            {data.description}
           </Typography>
 
           <Stack direction="row" alignItems="center" spacing={2}>
             <Typography fontSize={20} fontWeight={600}>
               {FormatUtils.formatNumber(discountedPrice)} $
             </Typography>
-            {sale && (
+            {data.salePercent && (
               <Typography
                 sx={{ textDecoration: "line-through" }}
                 color="text.disable"
               >
-                {FormatUtils.formatNumber(price)} $
+                {FormatUtils.formatNumber(data.price)} $
               </Typography>
             )}
           </Stack>
@@ -149,13 +163,7 @@ const ProductCard = ({
 export default memo(ProductCard);
 
 export type ProductCardProps = {
-  imgSrc: string;
-  imgAlt?: string;
-  title: string;
-  description: string;
-  price: number;
-  sale?: number;
-  isNew?: boolean;
+  data: IProduct;
 };
 
 const hoverStyles = {

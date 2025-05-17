@@ -1,8 +1,3 @@
-import { ApiConstant, PathConstant } from "@/const";
-import axios from "axios";
-import Cookie from "cookiejs";
-import Router from "next/router";
-
 // export async function refreshAccessToken() {
 //   try {
 //     const refreshToken = Cookie.get("refreshToken");
@@ -96,4 +91,26 @@ export const extractErrorMessages = (error: any): string => {
   }
 
   return "An unexpected error occurred.";
+};
+
+export const isClient = () => typeof window !== "undefined";
+
+export const createUrlWithParams = (
+  baseUrl: string,
+  params: { [key: string]: string | number | boolean }
+): string => {
+  const url = new URL(baseUrl);
+
+  if (params) {
+    Object.keys(params).forEach((key) => {
+      if (
+        params[key] !== undefined &&
+        params[key] !== null &&
+        params[key] !== ""
+      ) {
+        url.searchParams.append(key, params[key].toString());
+      }
+    });
+  }
+  return url.toString();
 };

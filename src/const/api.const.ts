@@ -11,19 +11,5 @@ export const STT_NOT_FOUND = 404;
 export const STT_INTERNAL_SERVER = 500;
 export const STT_NOT_MODIFIED = 304;
 
-export const PRODUCT = {
-  GET_LIST: "/products",
-  POST: "/products",
-  GET_BY_ID: "/products",
-  DELETE: "/products",
-  PUT: "/products",
-};
-
-export const PRODUCT_TYPE = {
-  GET_LIST: "/product-types",
-  POST: "/product-types",
-};
-
-export const UPLOAD = {
-  POST_FILE: "/file/upload",
-};
+// Home page
+export const GET_PRODUCT_HOME = "/products/home-page";

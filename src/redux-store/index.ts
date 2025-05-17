@@ -4,10 +4,15 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import homeReducer from "./home.slice";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "@/sagas";
+import productReducer, { productSlice } from "./product.slice";
+
+/* ------------- Assemble The Actions ------------- */
+export const productActions = productSlice.actions;
 
 /* ------------- Assemble The Reducers ------------- */
 const reducer = {
   homeReducer,
+  productReducer,
 };
 
 const sagaMiddleware = createSagaMiddleware();

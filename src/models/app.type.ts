@@ -29,3 +29,22 @@ export interface IMenuItemModel {
   icon?: React.ReactElement;
   href: string;
 }
+
+export interface IProduct {
+  name: string;
+  type: number;
+  image: string;
+  price: number;
+  description: string;
+  salePercent: string;
+  isNew: boolean;
+  isShowHomePage: boolean;
+}
+
+export interface IPaginationList<T> {
+  data: T[];
+  totalCount: number;
+  pageSize: number;
+  currentPage: number;
+  totalPages: number;
+}

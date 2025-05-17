@@ -40,7 +40,7 @@ export const ACCEPT_IMAGE = {
 export const IMAGE_RATIO = 16 / 9;
 
 export const HEADER_DEFAULT = {
-  "Content-Type": "application/json",
+  // "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*",
 };
 
@@ -62,3 +62,6 @@ export const DEFAULT_PAGINATION = {
   page: 1,
   size: PAGE_SIZE_OPTIONS[0],
 };
+
+export const DEFAULT_SIZE = 4;
+export const DEFAULT_PAGE = 1;
