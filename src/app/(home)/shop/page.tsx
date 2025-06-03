@@ -1,6 +1,10 @@
 import apiRequester from "@/api/apiRequester";
 import { AppBreadCrumb } from "@/components/common";
-import { FilterSection, ProductSection } from "@/components/sn-shop";
+import {
+  FilterSection,
+  ProductSection,
+  ServiceSection,
+} from "@/components/sn-shop";
 import { ApiConst, AppConstant } from "@/const";
 import { IPaginationList, IProduct } from "@/models";
 import { Stack } from "@mui/material";
@@ -34,6 +38,7 @@ const ShopPage = async () => {
       <AppBreadCrumb />
       <FilterSection data={productResponse} />
       <ProductSection data={productResponse} />
+      <ServiceSection />
     </Stack>
   );
 };

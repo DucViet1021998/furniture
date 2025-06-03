@@ -22,6 +22,8 @@ const ProductSection = ({ data }: { data: IPaginationList<IProduct> }) => {
     shallowEqual
   );
 
+  console.log(hasMore);
+
   useEffect(() => {
     dispatch(
       productActions.changePagination({
@@ -75,7 +77,7 @@ const ProductSection = ({ data }: { data: IPaginationList<IProduct> }) => {
         Our Products
       </Typography>
 
-      <Grid2 container mt={4} columnSpacing={2} rowSpacing={4}>
+      <Grid2 container mt={4} columnSpacing={2} rowSpacing={4} width="100%">
         {productList?.map((product, index) => (
           <Grid2 size={{ xs: 6, md: 3 }} key={index} data-aos="fade-up">
             <ProductCard data={product} />

@@ -12,7 +12,7 @@ const initialState: IInitState = {
   productList: [],
   currentPage: 0,
   totalPages: 0,
-  hasMore: true,
+  hasMore: false,
 };
 
 const reducers = {
