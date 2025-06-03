@@ -1,23 +1,23 @@
 "use client";
 
 import { Container, Grid2, Pagination, Stack } from "@mui/material";
-// import { products } from "../sn-home/ProductSection";
 import ProductCard from "../sn-home/ProductSection/ProductCard";
+import { IPaginationList, IProduct } from "@/models";
 
-const ProductSection = () => {
+const ProductSection = ({ data }: { data?: IPaginationList<IProduct> }) => {
   return (
     <Container>
       <Grid2 container mt={4} columnSpacing={2} rowSpacing={4}>
-        {/* {products.map((product, index) => (
+        {data?.data?.map((product, index) => (
           <Grid2 size={3} key={index}>
-            <ProductCard {...product} />
+            <ProductCard data={product} />
           </Grid2>
-        ))} */}
+        ))}
       </Grid2>
 
       <Stack mt={5} alignItems="center">
         <Pagination
-          count={10}
+          count={data?.totalPages}
           color="primary"
           variant="outlined"
           shape="rounded"

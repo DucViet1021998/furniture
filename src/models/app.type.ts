@@ -32,13 +32,47 @@ export interface IMenuItemModel {
 
 export interface IProduct {
   name: string;
-  type: number;
+  type: string;
   image: string;
   price: number;
-  description: string;
-  salePercent: string;
+  description?: string;
   isNew: boolean;
+  salePercent?: string;
   isShowHomePage: boolean;
+
+  generalInfo?: {
+    salesPackage?: string;
+    modelNumber?: string;
+    secondaryMaterial?: string;
+    configuration?: string;
+    upholsteryMaterial?: string;
+    upholsteryColor?: string;
+  };
+
+  productInfo?: {
+    fillingMaterial?: string;
+    finishType?: string;
+    adjustableHeadrest?: boolean;
+    maxLoadCapacityKg?: number;
+    originCountry?: string;
+  };
+
+  dimensions?: {
+    widthCm?: number;
+    heightCm?: number;
+    depthCm?: number;
+    weightKg?: number;
+    seatHeightCm?: number;
+    legHeightCm?: number;
+  };
+
+  warrantyInfo?: {
+    warrantySummary?: string;
+    warrantyServiceType?: string;
+    warrantyCoveredIn?: string;
+    warrantyNotCoveredIn?: string;
+    domesticWarrantyMonths?: number;
+  };
 }
 
 export interface IPaginationList<T> {

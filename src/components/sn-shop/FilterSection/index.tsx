@@ -1,4 +1,7 @@
+'use client";';
+
 import { FilterIcon, FourDotIcon, ViewIcon } from "@/components/icons";
+import { IPaginationList, IProduct } from "@/models";
 import {
   Container,
   Divider,
@@ -10,7 +13,12 @@ import {
 } from "@mui/material";
 import { Fragment } from "react";
 
-const FilterSection = () => {
+const FilterSection = ({ data }: { data?: IPaginationList<IProduct> }) => {
+  const totalShowing =
+    (data?.pageSize ?? 0) > (data?.totalCount ?? 0)
+      ? data?.totalCount ?? 0
+      : data?.pageSize ?? 0;
+
   return (
     <Stack height={100} bgcolor="#F9F1E7">
       <Container>
@@ -40,7 +48,8 @@ const FilterSection = () => {
               flexItem
             />
             <Typography color="text.black">
-              Showing 1–16 of 32 results
+              Showing {data?.currentPage}–{totalShowing} of {data?.totalCount}{" "}
+              results
             </Typography>
           </Stack>
           <Stack direction="row" spacing={3}>
