@@ -16,14 +16,15 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { memo, ReactNode, useMemo } from "react";
+import stringFormat from "string-format";
 
 const ProductCard = ({ data }: ProductCardProps) => {
   const router = useRouter();
 
   const productLabel = useMemo(() => {
-    if (data.salePercent) {
-      return { label: `${data.salePercent} %`, bgColor: "#E97171" };
-    } else if (data.isNew) {
+    if (data?.salePercent) {
+      return { label: `${data?.salePercent} %`, bgColor: "#E97171" };
+    } else if (data?.isNew) {
       return { label: "New", bgColor: "#2EC1AC" };
     } else {
       return { label: null, bgColor: undefined };
@@ -31,14 +32,17 @@ const ProductCard = ({ data }: ProductCardProps) => {
   }, [data]);
 
   const discountedPrice = useMemo(() => {
-    return data.salePercent
-      ? data.price - (data.price * Number(data.salePercent)) / 100
-      : data.price;
+    return data?.salePercent
+      ? data?.price - (data?.price * Number(data?.salePercent)) / 100
+      : data?.price || 0;
   }, [data]);
 
   const handleClick = () => {
-    const path = PRODUCT_DETAIL_PAGE.replace("[id]", data.name);
-    router.push(path);
+    router.push(
+      stringFormat(PRODUCT_DETAIL_PAGE, {
+        slug: data?.slug,
+      })
+    );
   };
 
   return (
@@ -60,17 +64,26 @@ const ProductCard = ({ data }: ProductCardProps) => {
         },
       }}
     >
-      <CardActionArea onClick={handleClick}>
+      <CardActionArea
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+        }}
+        onClick={handleClick}
+      >
         <Box
           sx={{
             height: 300,
+            maxHeight: 300,
             overflow: "hidden",
           }}
         >
           <CardMedia
             component="img"
-            image={data.image}
-            alt={data.name}
+            image={data?.image}
+            alt={data?.name}
             sx={{
               width: "100%",
               height: "100%",
@@ -80,29 +93,33 @@ const ProductCard = ({ data }: ProductCardProps) => {
           />
         </Box>
 
-        <CardContent>
+        <CardContent
+          sx={{
+            width: "100%",
+          }}
+        >
           <Typography
             gutterBottom
             variant="h3"
             fontWeight={600}
             component="div"
           >
-            {data.name}
+            {data?.name}
           </Typography>
           <Typography variant="h5" color="text.grey">
-            {data.description}
+            {data?.description}
           </Typography>
 
           <Stack direction="row" alignItems="center" spacing={2}>
             <Typography fontSize={20} fontWeight={600}>
               {FormatUtils.formatNumber(discountedPrice)} $
             </Typography>
-            {data.salePercent && (
+            {data?.salePercent && (
               <Typography
                 sx={{ textDecoration: "line-through" }}
                 color="text.disable"
               >
-                {FormatUtils.formatNumber(data.price)} $
+                {FormatUtils.formatNumber(data?.price)} $
               </Typography>
             )}
           </Stack>
@@ -163,7 +180,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
 export default memo(ProductCard);
 
 export type ProductCardProps = {
-  data: IProduct;
+  data?: IProduct;
 };
 
 const hoverStyles = {

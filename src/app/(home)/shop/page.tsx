@@ -1,4 +1,4 @@
-import apiRequester from "@/api/apiRequester";
+import apiRequester, { IApiResponsePagination } from "@/api/apiRequester";
 import { AppBreadCrumb } from "@/components/common";
 import {
   FilterSection,
@@ -6,38 +6,33 @@ import {
   ServiceSection,
 } from "@/components/sn-shop";
 import { ApiConst, AppConstant } from "@/const";
-import { IPaginationList, IProduct } from "@/models";
+import { IProduct } from "@/models";
 import { Stack } from "@mui/material";
 
-async function fetchData(): Promise<{
-  productResponse: IPaginationList<IProduct>;
-}> {
+async function fetchData(): Promise<IApiResponsePagination<IProduct>> {
   try {
-    const prouductlistResponse = await apiRequester.get<
-      IPaginationList<IProduct>
-    >(ApiConst.GET_PRODUCT_LIST, {
-      page: AppConstant.DEFAULT_PAGE,
-      size: AppConstant.DEFAULT_SIZE,
-    });
+    const prouductlistResponse = await apiRequester.getPaging<IProduct>(
+      ApiConst.GET_PRODUCT_HOME,
+      {
+        page: AppConstant.DEFAULT_PAGE,
+        size: AppConstant.DEFAULT_SIZE,
+      }
+    );
 
-    return {
-      productResponse: prouductlistResponse?.payload,
-    };
+    return prouductlistResponse;
   } catch (error) {
-    return {
-      productResponse: {} as IPaginationList<IProduct>,
-    };
+    return {} as IApiResponsePagination<IProduct>;
   }
 }
 
 const ShopPage = async () => {
-  const { productResponse } = await fetchData();
+  const productListResponse = await fetchData();
 
   return (
     <Stack>
       <AppBreadCrumb />
-      <FilterSection data={productResponse} />
-      <ProductSection data={productResponse} />
+      <FilterSection data={productListResponse} />
+      <ProductSection data={productListResponse} />
       <ServiceSection />
     </Stack>
   );

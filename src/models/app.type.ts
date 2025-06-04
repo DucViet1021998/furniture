@@ -6,11 +6,6 @@ export interface IIconProps extends SvgIconProps {
   className?: string;
 }
 
-export interface DataResponseModel<T> {
-  data: T;
-  status: number;
-}
-
 export enum SnackbarTypeEnum {
   ErrorServer,
   Warning,
@@ -32,6 +27,7 @@ export interface IMenuItemModel {
 
 export interface IProduct {
   name: string;
+  slug: string;
   type: string;
   image: string;
   price: number;
@@ -73,12 +69,4 @@ export interface IProduct {
     warrantyNotCoveredIn?: string;
     domesticWarrantyMonths?: number;
   };
-}
-
-export interface IPaginationList<T> {
-  data: T[];
-  totalCount: number;
-  pageSize: number;
-  currentPage: number;
-  totalPages: number;
 }

@@ -14,3 +14,4 @@ export const STT_NOT_MODIFIED = 304;
 // Home page
 export const GET_PRODUCT_HOME = "/products/home-page";
 export const GET_PRODUCT_LIST = "/products";
+export const GET_PRODUCT_DETAIL = `/products/slug/{slug}`;

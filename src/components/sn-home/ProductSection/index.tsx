@@ -1,8 +1,8 @@
 "use client";
 
-import apiRequester from "@/api/apiRequester";
+import apiRequester, { IApiResponsePagination } from "@/api/apiRequester";
 import { ApiConst, AppConstant } from "@/const";
-import { IPaginationList, IProduct } from "@/models";
+import { IProduct } from "@/models";
 import { productActions, useAppDispatch, useAppSelector } from "@/redux-store";
 import { Button, Grid2, Stack, Typography } from "@mui/material";
 import AOS from "aos";
@@ -10,7 +10,11 @@ import { useCallback, useEffect } from "react";
 import { shallowEqual } from "react-redux";
 import ProductCard from "./ProductCard";
 
-const ProductSection = ({ data }: { data: IPaginationList<IProduct> }) => {
+const ProductSection = ({
+  data,
+}: {
+  data: IApiResponsePagination<IProduct>;
+}) => {
   const dispatch = useAppDispatch();
   const { productList, currentPage, totalPages, hasMore } = useAppSelector(
     (state) => ({
@@ -22,16 +26,14 @@ const ProductSection = ({ data }: { data: IPaginationList<IProduct> }) => {
     shallowEqual
   );
 
-  console.log(hasMore);
-
   useEffect(() => {
     dispatch(
       productActions.changePagination({
-        currentPage: data.currentPage,
-        totalPages: data.totalPages,
+        currentPage: data.payload.currentPage,
+        totalPages: data.payload.totalPages,
       })
     );
-    dispatch(productActions.changeProductList(data.data));
+    dispatch(productActions.changeProductList(data.payload.data));
 
     AOS.init({
       duration: 500,
@@ -45,7 +47,7 @@ const ProductSection = ({ data }: { data: IPaginationList<IProduct> }) => {
 
   const fetchMoreProducts = useCallback(async () => {
     try {
-      const response = await apiRequester.get<IPaginationList<IProduct>>(
+      const response = await apiRequester.getPaging<IProduct>(
         ApiConst.GET_PRODUCT_HOME,
         {
           page: currentPage + 1,
@@ -58,7 +60,7 @@ const ProductSection = ({ data }: { data: IPaginationList<IProduct> }) => {
       dispatch(
         productActions.changePagination({
           currentPage: currentPage + 1,
-          totalPages: response?.payload?.totalPages || totalPages,
+          totalPages: response?.payload.totalPages || totalPages,
         })
       );
       dispatch(

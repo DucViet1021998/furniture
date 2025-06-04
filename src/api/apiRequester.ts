@@ -1,16 +1,33 @@
-import { CommonUtils, ServerUtils } from "@/utils";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
-import jsCookie from "js-cookie";
 import { ApiConst, AppConstant } from "@/const";
+import { CommonUtils } from "@/utils";
+import { HttpStatusCode } from "axios";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 export type IParams = {
   [key: string]: string | number | boolean | undefined | any;
 };
 
-export type ApiResponse<T> = {
+export interface ApiResponse<T> {
+  payload: {
+    data: T;
+    message: string;
+    code: HttpStatusCode;
+  };
   status: number;
-  payload: T;
-};
+}
+
+export interface IApiResponsePagination<T> {
+  payload: {
+    data: T[];
+    message: string;
+    code: HttpStatusCode;
+    totalCount: number;
+    pageSize: number;
+    currentPage: number;
+    totalPages: number;
+  };
+  status: number;
+}
 
 type CustomOptions = Omit<RequestInit, "method" | "signal"> & {
   baseUrl?: string;
@@ -26,7 +43,7 @@ const request = async <T>(
   method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
   endpoint: string,
   options?: CustomOptions
-): Promise<ApiResponse<T>> => {
+) => {
   try {
     const controller = options?.controller ?? new AbortController();
     const timeout = options?.timeout ?? AppConstant.TIMEOUT;
@@ -96,14 +113,17 @@ const request = async <T>(
     clearTimeout(timeoutId);
 
     const contentType = res.headers.get("content-type");
-    let payload: T;
+    let payload = null;
     if (contentType?.includes("application/json")) {
       payload = await res.json();
     } else {
       payload = (await res.text()) as T;
     }
 
-    const data: ApiResponse<T> = { status: res.status, payload };
+    const data = {
+      status: res.status,
+      payload,
+    };
 
     if (!res.ok) {
       if (res.status === ApiConst.STT_BAD_REQUEST) {
@@ -121,7 +141,11 @@ const request = async <T>(
 
     return {
       status: ApiConst.STT_INTERNAL_SERVER,
-      payload: errors as T,
+      payload: {
+        data: null as unknown as T,
+        message: errors instanceof Error ? errors.message : "Unknown error",
+        code: ApiConst.STT_INTERNAL_SERVER as HttpStatusCode,
+      },
     };
   }
 };
@@ -132,7 +156,19 @@ const apiRequester = {
     params?: IParams,
     options?: Omit<CustomOptions, "body" | "params">
   ): Promise<ApiResponse<T>> {
-    return request<T>("GET", url, { params, ...options });
+    return request<ApiResponse<T>>("GET", url, { params, ...options });
+  },
+
+  async getPaging<T>(
+    url: string,
+    params?: IParams,
+    options?: Omit<CustomOptions, "body" | "params"> | undefined
+  ): Promise<IApiResponsePagination<T>> {
+    const res = await request<IApiResponsePagination<T>>("GET", url, {
+      params,
+      ...options,
+    });
+    return res;
   },
 
   async post<T>(

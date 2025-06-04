@@ -1,7 +1,8 @@
 'use client";';
 
+import { IApiResponsePagination } from "@/api/apiRequester";
 import { FilterIcon, FourDotIcon, ViewIcon } from "@/components/icons";
-import { IPaginationList, IProduct } from "@/models";
+import { IProduct } from "@/models";
 import {
   Container,
   Divider,
@@ -11,13 +12,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Fragment } from "react";
 
-const FilterSection = ({ data }: { data?: IPaginationList<IProduct> }) => {
+const FilterSection = ({
+  data,
+}: {
+  data?: IApiResponsePagination<IProduct>;
+}) => {
   const totalShowing =
-    (data?.pageSize ?? 0) > (data?.totalCount ?? 0)
-      ? data?.totalCount ?? 0
-      : data?.pageSize ?? 0;
+    (data?.payload.pageSize ?? 0) > (data?.payload.totalCount ?? 0)
+      ? data?.payload.totalCount ?? 0
+      : data?.payload.pageSize ?? 0;
 
   return (
     <Stack height={100} bgcolor="#F9F1E7">
@@ -48,8 +52,8 @@ const FilterSection = ({ data }: { data?: IPaginationList<IProduct> }) => {
               flexItem
             />
             <Typography color="text.black">
-              Showing {data?.currentPage}–{totalShowing} of {data?.totalCount}{" "}
-              results
+              Showing {data?.payload.currentPage}–{totalShowing} of{" "}
+              {data?.payload.totalCount} results
             </Typography>
           </Stack>
           <Stack direction="row" spacing={3}>
