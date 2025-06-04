@@ -12,7 +12,7 @@ import { Stack } from "@mui/material";
 async function fetchData(): Promise<IApiResponsePagination<IProduct>> {
   try {
     const prouductlistResponse = await apiRequester.getPaging<IProduct>(
-      ApiConst.GET_PRODUCT_HOME,
+      ApiConst.GET_PRODUCT_LIST,
       {
         page: AppConstant.DEFAULT_PAGE,
         size: AppConstant.DEFAULT_SIZE,
