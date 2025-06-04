@@ -1,5 +1,6 @@
 import AccountIcon from "./AccountIcon";
 import ArrowIcon from "./ArrowIcon";
+import ArrowIcon2 from "./ArrowIcon2";
 import CartIcon from "./CartIcon";
 import CloseIcon from "./CloseIcon";
 import CompareIcon from "./CompareIcon";
@@ -17,6 +18,7 @@ import ViewIcon from "./ViewIcon";
 import WarningNotifyIcon from "./WarningNotifyIcon";
 
 export {
+  ArrowIcon2,
   AccountIcon,
   CartIcon,
   HeartIcon,

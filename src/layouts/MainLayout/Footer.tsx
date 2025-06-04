@@ -2,6 +2,7 @@ import {
   Button,
   Container,
   Divider,
+  Link,
   Stack,
   TextField,
   Typography,
@@ -76,7 +77,17 @@ const Footer = () => (
       </Stack>
       <Divider sx={{ bgcolor: "primary.main", my: 5 }} />
       <Typography color="text.black">
-        2023 Funiro. All rights reserved
+        © 2025 Funiro. All rights reserved. Developed by{" "}
+        <Link
+          href="https://nguyenducviet.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          underline="hover"
+          color="inherit"
+          fontWeight={700}
+        >
+          DucViett
+        </Link>
       </Typography>
     </Stack>
   </Container>
