@@ -7,15 +7,25 @@ import {
   HeartIcon,
   SearchIcon,
 } from "@/components/icons";
-import { cartActions, useAppDispatch } from "@/redux-store";
-import { Box, Stack } from "@mui/material";
+import { cartActions, useAppDispatch, useAppSelector } from "@/redux-store";
+import { Badge, Box, Stack } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const icons = [AccountIcon, SearchIcon, HeartIcon];
 const IconSection = () => {
   const dispatch = useAppDispatch();
+  const [quantity, setQuantity] = useState(0);
+  const { cartItems } = useAppSelector((state) => state.cartReducer);
+
   const handleShowCart = () => {
     dispatch(cartActions.isShowCart(true));
   };
+
+  useEffect(() => {
+    if (cartItems.length) {
+      setQuantity(getTotalQuantity(cartItems));
+    }
+  }, [cartItems]);
 
   return (
     <>
@@ -27,7 +37,9 @@ const IconSection = () => {
           </Box>
         ))}
         <Box className="cursor-pointer">
-          <CartIcon onClick={handleShowCart} />
+          <Badge badgeContent={quantity} color="error">
+            <CartIcon onClick={handleShowCart} />
+          </Badge>
         </Box>
       </Stack>
     </>
@@ -35,3 +47,10 @@ const IconSection = () => {
 };
 
 export default IconSection;
+
+const getTotalQuantity = (products: { quantity: number }[]): number => {
+  return products.reduce(
+    (total, product) => total + (product.quantity || 0),
+    0
+  );
+};

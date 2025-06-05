@@ -1,4 +1,3 @@
-import { ICartItem } from "@/redux-store/cart.slice";
 import { SvgIconProps } from "@mui/material";
 import { ReactNode } from "react";
 
@@ -79,8 +78,4 @@ export interface IPaginationList<T> {
   pageSize: number;
   currentPage: number;
   totalPages: number;
-}
-
-export interface ICartItemCardProps {
-  cartItem: ICartItem;
 }

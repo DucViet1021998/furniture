@@ -1,4 +1,3 @@
-"use client";
 import { AppBar, Container, Stack, Toolbar } from "@mui/material";
 import IconSection from "./IconSection";
 import LogoSection from "./LogoSection";

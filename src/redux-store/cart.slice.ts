@@ -1,17 +1,8 @@
 import { IProduct } from "@/models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface ICartItem {
-  productId: string;
+export interface ICartItem extends IProduct {
   quantity: number;
-  name: string;
-  type: string;
-  image: string;
-  price: number;
-  description?: string;
-  isNew: boolean;
-  salePercent?: string;
-  isShowHomePage: boolean;
 }
 
 export interface IInitState {
@@ -32,15 +23,13 @@ const reducers = {
     state.cartItems = action.payload;
   },
   addProductToCart: (state: IInitState, action: PayloadAction<IProduct>) => {
-    const isExistItem: boolean = state.cartItems.find(
-      (item) => item.productId === action.payload._id
-    )
-      ? true
-      : false;
+    const isExistItem = state.cartItems.find(
+      (item) => item._id === action.payload._id
+    );
 
     if (isExistItem) {
       state.cartItems = state.cartItems.map((item) =>
-        item.productId === action.payload._id
+        item._id === action.payload._id
           ? {
               ...item,
               quantity: item.quantity + 1,
@@ -51,7 +40,6 @@ const reducers = {
     }
 
     const newItem: ICartItem = {
-      productId: action.payload._id,
       quantity: 1,
       ...action.payload,
     };
@@ -59,14 +47,14 @@ const reducers = {
   },
   subProductToCart: (state: IInitState, action: PayloadAction<IProduct>) => {
     state.cartItems = state.cartItems.map((item) =>
-      item.productId === action.payload._id
+      item._id === action.payload._id
         ? { ...item, quantity: item.quantity - 1 }
         : item
     );
   },
   removeCartItem: (state: IInitState, action: PayloadAction<ICartItem>) => {
     state.cartItems = state.cartItems.filter(
-      (item) => item.productId !== action.payload.productId
+      (item) => item._id !== action.payload._id
     );
   },
   isShowCart: (state: IInitState, action: PayloadAction<boolean>) => {
