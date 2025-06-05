@@ -1,6 +1,8 @@
 "use-client";
 
+import { CloseCartIcon } from "@/components/icons";
 import { cartActions, useAppDispatch, useAppSelector } from "@/redux-store";
+import { ICartItem } from "@/redux-store/cart.slice";
 import { FormatUtils } from "@/utils";
 import { Button, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -9,8 +11,6 @@ import Drawer from "@mui/material/Drawer";
 import { memo, useEffect, useMemo } from "react";
 import { shallowEqual } from "react-redux";
 import CartItemCard from "./CartItemCard";
-import CloseCartIcon from "./CloseCartIcon";
-import { ICartItem } from "@/redux-store/cart.slice";
 
 const ShoppingCart = () => {
   const dispatch = useAppDispatch();
@@ -146,7 +146,7 @@ const ShoppingCart = () => {
               }}
               variant="outlined"
             >
-              Comparision
+              Comparison
             </Button>
           </Stack>
         </Box>
