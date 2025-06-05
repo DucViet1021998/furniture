@@ -1,18 +1,19 @@
 "use client";
 
-import { ShareIcon, CompareIcon, LikeIcon } from "@/components/icons";
+import { CompareIcon, LikeIcon, ShareIcon } from "@/components/icons";
 import { PRODUCT_DETAIL_PAGE } from "@/const/path.const";
 import { IProduct } from "@/models";
+import { cartActions, useAppDispatch } from "@/redux-store";
 import { FormatUtils } from "@/utils";
 import {
+  Box,
+  Button,
   Card,
   CardActionArea,
-  CardMedia,
   CardContent,
-  Typography,
+  CardMedia,
   Stack,
-  Button,
-  Box,
+  Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { memo, ReactNode, useMemo } from "react";
@@ -43,6 +44,12 @@ const ProductCard = ({ data }: ProductCardProps) => {
         slug: data?.slug,
       })
     );
+  };
+
+  const dispatch = useAppDispatch();
+
+  const handleAddProductToCart = () => {
+    dispatch(cartActions.addProductToCart(data));
   };
 
   return (
@@ -130,7 +137,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
         sx={{ ...hoverStyles, width: "100%", alignItems: "center" }}
       >
         <Button
-          onClick={() => console.log("add to cart")}
+          onClick={handleAddProductToCart}
           variant="contained"
           sx={{
             width: 202,
@@ -180,7 +187,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
 export default memo(ProductCard);
 
 export type ProductCardProps = {
-  data?: IProduct;
+  data: IProduct;
 };
 
 const hoverStyles = {

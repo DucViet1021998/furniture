@@ -1,18 +1,21 @@
 import { EnvConstant } from "@/const";
+import rootSaga from "@/sagas";
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import homeReducer from "./home.slice";
 import createSagaMiddleware from "redux-saga";
-import rootSaga from "@/sagas";
+import cartReducer, { cartSlice } from "./cart.slice";
+import homeReducer from "./home.slice";
 import productReducer, { productSlice } from "./product.slice";
 
 /* ------------- Assemble The Actions ------------- */
 export const productActions = productSlice.actions;
+export const cartActions = cartSlice.actions;
 
 /* ------------- Assemble The Reducers ------------- */
 const reducer = {
   homeReducer,
   productReducer,
+  cartReducer
 };
 
 const sagaMiddleware = createSagaMiddleware();
