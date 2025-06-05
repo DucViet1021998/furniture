@@ -1,3 +1,4 @@
+import { ICartItem } from "@/redux-store/cart.slice";
 import { SvgIconProps } from "@mui/material";
 import { ReactNode } from "react";
 
@@ -26,6 +27,7 @@ export interface IMenuItemModel {
 }
 
 export interface IProduct {
+  _id: string;
   name: string;
   slug: string;
   type: string;
@@ -69,4 +71,16 @@ export interface IProduct {
     warrantyNotCoveredIn?: string;
     domesticWarrantyMonths?: number;
   };
+}
+
+export interface IPaginationList<T> {
+  data: T[];
+  totalCount: number;
+  pageSize: number;
+  currentPage: number;
+  totalPages: number;
+}
+
+export interface ICartItemCardProps {
+  cartItem: ICartItem;
 }
