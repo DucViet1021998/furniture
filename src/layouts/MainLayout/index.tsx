@@ -1,7 +1,6 @@
-"use client";
 import { Stack } from "@mui/material";
-import Footer from "./Footer";
 import Header, { HEADER_HEIGHT } from "./Header";
+import Footer from "./Footer";
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (

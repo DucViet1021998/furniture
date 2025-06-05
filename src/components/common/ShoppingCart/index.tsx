@@ -1,18 +1,19 @@
 "use-client";
 
 import { cartActions, useAppDispatch, useAppSelector } from "@/redux-store";
-import { ICartItem } from "@/redux-store/cart.slice";
 import { FormatUtils } from "@/utils";
 import { Button, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useMemo } from "react";
 import { shallowEqual } from "react-redux";
 import CartItemCard from "./CartItemCard";
 import CloseCartIcon from "./CloseCartIcon";
+import { ICartItem } from "@/redux-store/cart.slice";
 
 const ShoppingCart = () => {
+  const dispatch = useAppDispatch();
   const { isShowCart, cartItems } = useAppSelector(
     (state) => ({
       isShowCart: state.cartReducer.isShowCart,
@@ -35,16 +36,16 @@ const ShoppingCart = () => {
     localStorage.setItem(CART_KEY, JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const dispatch = useAppDispatch();
-
   const handleCloseCart = () => {
     dispatch(cartActions.isShowCart(false));
   };
 
-  const subtotal: number = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const subtotal = useMemo(() => {
+    return cartItems.reduce((total, item) => {
+      const discounted = getDiscountedPrice(item.price, item.salePercent);
+      return total + discounted * item.quantity;
+    }, 0);
+  }, [cartItems]);
 
   return (
     <div>
@@ -53,11 +54,11 @@ const ShoppingCart = () => {
         onClose={handleCloseCart}
         anchor={"right"}
         PaperProps={{
-          sx: { height: "746px" },
+          sx: { height: "746px", maxHeight: "100%" },
         }}
       >
         <Box
-          sx={{ width: 500 }}
+          sx={{ width: 415 }}
           paddingX={2}
           paddingY={2}
           role="presentation"
@@ -67,7 +68,7 @@ const ShoppingCart = () => {
           height={"100%"}
         >
           {/* Header */}
-          <Box sx={{ border: "1px" }} height={"5%"}>
+          <Box sx={{ border: "1px" }}>
             <Box
               display={"flex"}
               justifyContent={"space-between"}
@@ -99,16 +100,12 @@ const ShoppingCart = () => {
             }}
           >
             {cartItems.map((item) => (
-              <CartItemCard key={item.productId} cartItem={item} />
+              <CartItemCard key={item._id} cartItem={item} />
             ))}
           </Box>
+
           {/* Footer */}
-          <Stack
-            direction={"row"}
-            justifyContent={"space-between"}
-            height={"5%"}
-            sx={{ flexShrink: 0 }}
-          >
+          <Stack direction={"row"} justifyContent={"space-between"} pt={1}>
             <Typography fontSize={20} fontWeight={400}>
               Subtotal
             </Typography>
@@ -127,9 +124,30 @@ const ShoppingCart = () => {
             display={"flex"}
             justifyContent={"space-between"}
           >
-            <Button variant="outlined">Cart</Button>
-            <Button variant="outlined">Checkout</Button>
-            <Button variant="outlined">Comparision</Button>
+            <Button
+              variant="outlined"
+              sx={{
+                borderRadius: 99,
+              }}
+            >
+              Cart
+            </Button>
+            <Button
+              sx={{
+                borderRadius: 99,
+              }}
+              variant="outlined"
+            >
+              Checkout
+            </Button>
+            <Button
+              sx={{
+                borderRadius: 99,
+              }}
+              variant="outlined"
+            >
+              Comparision
+            </Button>
           </Stack>
         </Box>
       </Drawer>
@@ -139,3 +157,12 @@ const ShoppingCart = () => {
 export default memo(ShoppingCart);
 
 export const CART_KEY = "cart";
+
+export const getDiscountedPrice = (
+  price: number,
+  salePercent?: string
+): number => {
+  const sale = parseFloat(salePercent || "0");
+  if (!price || isNaN(sale)) return price;
+  return price - (price * sale) / 100;
+};
