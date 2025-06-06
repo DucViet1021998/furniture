@@ -17,3 +17,6 @@ export const LOGOUT = "/logout";
 // setting
 export const SETTING = "/setting";
 export const PRODUCT_TYPE = `${SETTING}/product-type`;
+
+// cart
+export const CART_PAGE = "/cart";

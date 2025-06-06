@@ -24,6 +24,8 @@ const IconSection = () => {
   useEffect(() => {
     if (cartItems.length) {
       setQuantity(getTotalQuantity(cartItems));
+    } else {
+      setQuantity(0);
     }
   }, [cartItems]);
 

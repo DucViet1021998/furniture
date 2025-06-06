@@ -1,5 +1,6 @@
 "use-client";
 
+import { RemoveCartItemIcon } from "@/components/icons";
 import { cartActions, useAppDispatch } from "@/redux-store";
 import { ICartItem } from "@/redux-store/cart.slice";
 import { FormatUtils } from "@/utils";
@@ -13,7 +14,6 @@ import {
 } from "@mui/material";
 import { memo } from "react";
 import { getDiscountedPrice } from ".";
-import RemoveCartItemIcon from "./RemoveCartItemIcon";
 
 const CartItemCard = ({ cartItem }: ICartItemCardProps) => {
   const dispatch = useAppDispatch();

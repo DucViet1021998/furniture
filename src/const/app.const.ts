@@ -1,4 +1,10 @@
-import { ABOUT_PAGE, CONTACT_PAGE, HOME_PAGE, SHOP_PAGE } from "./path.const";
+import {
+  ABOUT_PAGE,
+  CART_PAGE,
+  CONTACT_PAGE,
+  HOME_PAGE,
+  SHOP_PAGE,
+} from "./path.const";
 
 export const routes = [
   {
@@ -16,6 +22,10 @@ export const routes = [
   {
     label: "Contact",
     path: CONTACT_PAGE,
+  },
+  {
+    label: "Cart",
+    path: CART_PAGE,
   },
 ];
 
