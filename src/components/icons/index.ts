@@ -16,6 +16,7 @@ import RemoveCartItemIcon from "./RemoveCartItemIcon";
 import SearchIcon from "./SearchIcon";
 import ShareIcon from "./ShareIcon";
 import SuccessIcon from "./SuccessIcon";
+import TrashIcon from "./TrashIcon";
 import ViewIcon from "./ViewIcon";
 import WarningNotifyIcon from "./WarningNotifyIcon";
 
@@ -38,6 +39,7 @@ export {
   SearchIcon,
   ShareIcon,
   SuccessIcon,
+  TrashIcon,
   ViewIcon,
   WarningNotifyIcon,
 };
