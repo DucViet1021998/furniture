@@ -60,6 +60,11 @@ const reducers = {
   isShowCart: (state: IInitState, action: PayloadAction<boolean>) => {
     state.isShowCart = action.payload;
   },
+  changeQuantity: (state: IInitState, action: PayloadAction<ICartItem>) => {
+    state.cartItems = state.cartItems.map((item) =>
+      item._id === action.payload._id ? { ...action.payload } : item
+    );
+  },
 };
 
 export const cartSlice = createSlice({

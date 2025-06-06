@@ -18,6 +18,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useMemo } from "react";
@@ -55,20 +56,29 @@ const CartPage = () => {
     }, 0);
   }, [cartItems]);
 
+  const handleChangeQuantity = (newValue: string, cartItem: ICartItem) => {
+    // set min value equal 1
+    if (!+newValue) {
+      newValue = "1";
+    }
+    dispatch(
+      cartActions.changeQuantity({ ...cartItem, quantity: Number(newValue) })
+    );
+  };
+
   return (
     <>
       <AppBreadCrumb />
       <Stack
         width={"100%"}
         direction={"row"}
-        height={"525px"}
         paddingX={"100px"}
         paddingY={"80px"}
       >
         {/* Card List */}
         <Box width={"75%"} height={"100%"} maxHeight={"100%"}>
           <TableContainer sx={{ maxHeight: "100%" }}>
-            <Table stickyHeader aria-label="sticky table">
+            <Table>
               <TableHead>
                 <TableRow>
                   {cartHeadLabel.map((label, index) => (
@@ -130,24 +140,45 @@ const CartPage = () => {
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography
-                        display={"flex"}
-                        justifyContent={"center"}
-                        alignItems={"center"}
-                        border={1}
-                        borderRadius={"5px"}
-                        borderColor={"#9F9F9F"}
-                        width={"32px"}
-                        height={"32px"}
-                        margin={"auto"}
-                        fontSize={"16px"}
-                        fontWeight={400}
-                        lineHeight={"100%"}
-                      >
-                        {item.quantity}
-                      </Typography>
+                      <TextField
+                        variant="outlined"
+                        sx={{
+                          width: "40px",
+                          height: "40px",
+                          "& .MuiInputBase-root": {
+                            height: "100%",
+                            padding: 0,
+                          },
+                          "& input": {
+                            textAlign: "center",
+                            height: "100%",
+                            padding: 0,
+                          },
+                          "& input[type=number]": {
+                            MozAppearance: "textfield",
+                          },
+                          "& input[type=number]::-webkit-outer-spin-button": {
+                            WebkitAppearance: "none",
+                            margin: 0,
+                          },
+                          "& input[type=number]::-webkit-inner-spin-button": {
+                            WebkitAppearance: "none",
+                            margin: 0,
+                          },
+                        }}
+                        type="number"
+                        value={item.quantity}
+                        onChange={(e) =>
+                          handleChangeQuantity(e.target.value, item)
+                        }
+                      />
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell
+                      align="center"
+                      sx={{
+                        maxWidth: "100px",
+                      }}
+                    >
                       <Typography
                         fontSize={"16px"}
                         fontWeight={400}
@@ -180,6 +211,7 @@ const CartPage = () => {
           sx={{ backgroundColor: "#F9F1E7" }}
           marginLeft={10}
           width={"25%"}
+          height={"390px"}
         >
           <Box
             padding={3}
