@@ -14,9 +14,9 @@ const RoomSection = () => {
       </Stack>
 
       <Stack direction="row" mt={8} spacing={2}>
-        {/* {roomData.map((room) => (
+        {roomData.map((room) => (
           <RoomItem key={room.alt} {...room} />
-        ))} */}
+        ))}
       </Stack>
     </Stack>
   );

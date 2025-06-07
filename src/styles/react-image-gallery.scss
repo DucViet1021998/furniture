@@ -13,6 +13,11 @@
   width: 76px;
   height: 80px;
   background-color: #f9f1e7;
+  overflow: hidden;
+}
+
+.image-gallery-thumbnail-inner {
+  height: fit-content !important;
 }
 
 .image-gallery-thumbnail.active,
@@ -65,4 +70,16 @@
       height: 100%;
     }
   }
+}
+
+.image-gallery-fullscreen-button {
+  color: #b88e2f;
+
+  &:hover {
+    color: #b88e2f;
+  }
+}
+
+.image-gallery-thumbnail {
+  border-radius: 10px;
 }

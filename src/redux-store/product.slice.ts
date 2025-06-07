@@ -43,7 +43,7 @@ const reducers = {
     state.productList = [];
     state.currentPage = 0;
     state.totalPages = 0;
-    state.hasMore = true;
+    state.hasMore = false;
   },
 };
 

@@ -12,8 +12,10 @@ import ProductCard from "./ProductCard";
 
 const ProductSection = ({
   data,
+  apiUrl = ApiConst.GET_PRODUCT_HOME,
 }: {
   data: IApiResponsePagination<IProduct>;
+  apiUrl?: string;
 }) => {
   const dispatch = useAppDispatch();
   const { productList, currentPage, totalPages, hasMore } = useAppSelector(
@@ -47,13 +49,10 @@ const ProductSection = ({
 
   const fetchMoreProducts = useCallback(async () => {
     try {
-      const response = await apiRequester.getPaging<IProduct>(
-        ApiConst.GET_PRODUCT_HOME,
-        {
-          page: currentPage + 1,
-          size: AppConstant.DEFAULT_SIZE,
-        }
-      );
+      const response = await apiRequester.getPaging<IProduct>(apiUrl, {
+        page: currentPage + 1,
+        size: AppConstant.DEFAULT_SIZE,
+      });
 
       const newProjects = response?.payload?.data || [];
       dispatch(productActions.changeMoreProductList(newProjects));

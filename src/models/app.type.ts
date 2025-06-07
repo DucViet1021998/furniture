@@ -25,51 +25,66 @@ export interface IMenuItemModel {
   href: string;
 }
 
+export interface IAlbumItem {
+  fileId: string;
+  originName: string;
+  url: string;
+}
+
+export interface IGeneralInfo {
+  salesPackage?: string;
+  modelNumber?: string;
+  secondaryMaterial?: string;
+  configuration?: string;
+  upholsteryMaterial?: string;
+  upholsteryColor?: string;
+}
+
+export interface IProductInfo {
+  fillingMaterial?: string;
+  finishType?: string;
+  adjustableHeadrest?: boolean;
+  maxLoadCapacityKg?: number;
+  originCountry?: string;
+}
+
+export interface IDimensions {
+  widthCm?: number;
+  heightCm?: number;
+  depthCm?: number;
+  weightKg?: number;
+  seatHeightCm?: number;
+  legHeightCm?: number;
+}
+
+export interface IWarrantyInfo {
+  warrantySummary?: string;
+  warrantyServiceType?: string;
+  warrantyCoveredIn?: string;
+  warrantyNotCoveredIn?: string;
+  domesticWarrantyMonths?: number;
+}
+
 export interface IProduct {
+  slug: string;
   _id: string;
   name: string;
-  slug: string;
   type: string;
   image: string;
   price: number;
   description?: string;
   isNew: boolean;
-  salePercent?: string;
+  salePercent?: number;
   isShowHomePage: boolean;
+  content?: string;
+  colors: string[];
 
-  generalInfo?: {
-    salesPackage?: string;
-    modelNumber?: string;
-    secondaryMaterial?: string;
-    configuration?: string;
-    upholsteryMaterial?: string;
-    upholsteryColor?: string;
-  };
+  albumItems: IAlbumItem[];
 
-  productInfo?: {
-    fillingMaterial?: string;
-    finishType?: string;
-    adjustableHeadrest?: boolean;
-    maxLoadCapacityKg?: number;
-    originCountry?: string;
-  };
-
-  dimensions?: {
-    widthCm?: number;
-    heightCm?: number;
-    depthCm?: number;
-    weightKg?: number;
-    seatHeightCm?: number;
-    legHeightCm?: number;
-  };
-
-  warrantyInfo?: {
-    warrantySummary?: string;
-    warrantyServiceType?: string;
-    warrantyCoveredIn?: string;
-    warrantyNotCoveredIn?: string;
-    domesticWarrantyMonths?: number;
-  };
+  generalInfo?: IGeneralInfo;
+  productInfo?: IProductInfo;
+  dimensions?: IDimensions;
+  warrantyInfo?: IWarrantyInfo;
 }
 
 export interface IPaginationList<T> {

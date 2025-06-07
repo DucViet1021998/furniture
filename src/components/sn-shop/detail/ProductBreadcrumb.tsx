@@ -12,7 +12,7 @@ import { memo } from "react";
 
 const ProjectBreadcrumb = ({ title }: { title: string }) => {
   return (
-    <Stack height={100} bgcolor="#F9F1E7" justifyContent="center">
+    <Stack height={100} bgcolor="#F9F1E7" mb={5} justifyContent="center">
       <Container>
         <Box display="flex" alignItems="center">
           <Breadcrumbs

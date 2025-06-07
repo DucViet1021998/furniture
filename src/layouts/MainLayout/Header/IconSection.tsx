@@ -1,6 +1,6 @@
 "use client";
 
-import ShoppingCart from "@/components/common/ShoppingCart";
+import ShoppingCart from "@/components/sn-common/ShoppingCart";
 import {
   AccountIcon,
   CartIcon,

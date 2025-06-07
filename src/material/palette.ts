@@ -13,6 +13,7 @@ const palette: TPalette = {
     main: "#2EC1AC",
   },
   text: {
+    secondary: "#9F9F9F",
     primary: "#3A3A3A",
     black: "#000000",
     grey: "#898989",

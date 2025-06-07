@@ -1,7 +1,7 @@
 "use client";
 
 import { AppBreadCrumb } from "@/components/common";
-import { getDiscountedPrice } from "@/components/common/ShoppingCart";
+import { getDiscountedPrice } from "@/components/sn-common/ShoppingCart";
 import { TrashIcon } from "@/components/icons";
 import { ServiceSection } from "@/components/sn-shop";
 import { cartActions, useAppDispatch, useAppSelector } from "@/redux-store";

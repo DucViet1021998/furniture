@@ -170,9 +170,9 @@ export const CART_KEY = "cart";
 
 export const getDiscountedPrice = (
   price: number,
-  salePercent?: string
+  salePercent?: number
 ): number => {
-  const sale = parseFloat(salePercent || "0");
-  if (!price || isNaN(sale)) return price;
+  const sale = salePercent || 0;
+  if (!price || sale) return price;
   return price - (price * sale) / 100;
 };
