@@ -10,8 +10,10 @@ import FilterIcon from "./FilterIcon";
 import FourDotIcon from "./FourDotIcon";
 import HeartIcon from "./HeartIcon";
 import LikeIcon from "./LikeIcon";
+import LocationIcon from "./LocationIcon";
 import Logo from "./Logo";
 import OverviewIcon from "./OverviewIcon";
+import PhoneIcon from "./PhoneIcon";
 import RemoveCartItemIcon from "./RemoveCartItemIcon";
 import SearchIcon from "./SearchIcon";
 import ShareIcon from "./ShareIcon";
@@ -19,8 +21,12 @@ import SuccessIcon from "./SuccessIcon";
 import TrashIcon from "./TrashIcon";
 import ViewIcon from "./ViewIcon";
 import WarningNotifyIcon from "./WarningNotifyIcon";
+import WorkIcon from "./WorkIcon";
 
 export {
+  WorkIcon,
+  PhoneIcon,
+  LocationIcon,
   AccountIcon,
   ArrowIcon,
   ArrowIcon2,

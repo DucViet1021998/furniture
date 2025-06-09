@@ -50,7 +50,7 @@ export const ACCEPT_IMAGE = {
 export const IMAGE_RATIO = 16 / 9;
 
 export const HEADER_DEFAULT = {
-  // "Content-Type": "application/json",
+  "Content-Type": "application/json",
   "Access-Control-Allow-Origin": "*",
 };
 

@@ -80,7 +80,7 @@ const AppTextField = forwardRef(
             fontWeight: "400 !important",
           },
           textarea: {
-            pl: 1.75,
+            pl: 1,
           },
           input: {
             height: "1.3575em",

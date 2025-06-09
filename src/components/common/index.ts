@@ -5,8 +5,10 @@ import AppImage from "./AppImage";
 import AppSwipe from "./AppSwipe";
 import AppBreadCrumb from "./AppBreadCrumb";
 import AppHTMLRender from "./AppHTMLRender";
+import AppFormTextField from "./form/AppFormTextField";
 
 export {
+  AppFormTextField,
   AppHTMLRender,
   AppSnackbarError,
   AppSnackbarWarning,

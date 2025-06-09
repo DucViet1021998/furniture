@@ -39,7 +39,7 @@ const AppBreadCrumb = () => {
         <Stack className="text-5xl" alignItems="center">
           <Logo />
           <Typography fontSize={48} fontWeight={500}>
-            Shop
+            {findRouterName(router)}
           </Typography>
         </Stack>
 
@@ -61,5 +61,5 @@ const AppBreadCrumb = () => {
 export default AppBreadCrumb;
 
 const findRouterName = (pathName: string) => {
-  return AppConstant.routes.find((item) => item.path === pathName)?.label;
+  return AppConstant.routes.find((item) => item.path === pathName)?.label || "";
 };
