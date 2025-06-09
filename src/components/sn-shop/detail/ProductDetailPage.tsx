@@ -79,12 +79,7 @@ const ProductDetailPage = ({ data }: { data: IProduct }) => {
               </Stack>
 
               {/* Mô tả */}
-              <div style={{ fontSize: 14, color: "#555" }}>
-                Setting the bar as one of the loudest speakers in its class, the
-                Kilburn is a compact, stout-hearted hero with a well-balanced
-                audio which boasts a clear midrange and extended highs for a
-                sound.
-              </div>
+              <Typography color="text.secondary">{data.description}</Typography>
 
               {/* Size */}
               <Stack spacing={1}>
