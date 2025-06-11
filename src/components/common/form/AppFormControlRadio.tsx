@@ -94,7 +94,7 @@ type RadioType = {
 };
 
 type AppFormControlRadioProps<T extends FieldValues> = StackProps & {
-  control: Control<any, object>;
+  control: any;
   name: FieldPath<T>;
   radioList: Array<RadioType>;
   rules?: Omit<
@@ -104,7 +104,7 @@ type AppFormControlRadioProps<T extends FieldValues> = StackProps & {
   helperText?: React.ReactNode;
 
   radioProps?: RadioProps & RefAttributes<HTMLInputElement>;
-  controlProps?: Omit<ControllerProps, "render" | "name" | "control">;
+  controlProps?: any;
   label?: string;
   formLabelProps?: FormLabelProps;
   radioGroupProps?: RadioGroupProps;

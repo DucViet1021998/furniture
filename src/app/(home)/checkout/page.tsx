@@ -2,6 +2,7 @@
 import { IOption } from "@/components/common/AppAutoComplete";
 import AppFormAutocomplete from "@/components/common/form/AppFormAutocomplete";
 import AppFormControlRadio from "@/components/common/form/AppFormControlRadio";
+import AppFormPhone from "@/components/common/form/AppFormPhone";
 import AppFormTextField from "@/components/common/form/AppFormTextField";
 import { getDiscountedPrice } from "@/components/sn-common/ShoppingCart";
 import { AppConstant } from "@/const";
@@ -19,9 +20,10 @@ import {
 import { ICartItem } from "@/redux-store/cart.slice";
 import { FormatUtils } from "@/utils";
 import { Button, Divider, Stack, Typography } from "@mui/material";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { shallowEqual } from "react-redux";
+import { CountryCode } from "libphonenumber-js/core";
 
 const CONTENT_TYPE_LIST = [
   {
@@ -36,6 +38,7 @@ const CONTENT_TYPE_LIST = [
 
 const CheckoutPage = () => {
   const dispatch = useAppDispatch();
+  const [defaultCountry, setDefaultCountry] = useState<CountryCode>("VN");
   const { countries, provinces, phones, cartItems } = useAppSelector(
     (state) => ({
       countries: state.countryReducer.countries,
@@ -50,7 +53,23 @@ const CheckoutPage = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      companyName: "",
+      country: undefined, // hoặc { code: "VN", label: "Vietnam" } nếu bạn muốn chọn sẵn
+      streetAddress: "",
+      city: "",
+      province: undefined,
+      zipCode: "",
+      phone: "",
+      phoneCode: { code: "+84", label: "+84" },
+      emailAddress: "",
+      additionalInformation: "",
+      paymentMethod: PaymentMethodEnum.DirectBankTransfer,
+    },
+  });
 
   const handleSubmitData = (valueForm: any) => {
     const payload: CreateCheckoutModel = {
@@ -62,7 +81,7 @@ const CheckoutPage = () => {
       city: valueForm.city,
       province: valueForm.province.code,
       zipCode: valueForm.zipCode,
-      phone: valueForm.phoneCode.label + valueForm.phone,
+      phone: valueForm.phone,
       email: valueForm.emailAddress,
       total: subtotal,
       paymentMethod: valueForm.paymentMethod,
@@ -71,8 +90,8 @@ const CheckoutPage = () => {
         quantity: item.quantity,
       })) as CheckoutProductModel[],
     };
-    console.log(JSON.stringify(payload));
-    dispatch(checkoutActions.placeOrder(payload));
+    console.log(payload);
+    // dispatch(checkoutActions.placeOrder(payload));
   };
 
   useEffect(() => {
@@ -86,7 +105,11 @@ const CheckoutPage = () => {
   const handleChangeCountry = (data?: IOption | IOption[]) => {
     const castedData = data as IOption | undefined;
     dispatch(countryActions.getProvinceList(castedData?.code as string));
-    dispatch(countryActions.getPhoneList(castedData?.code as string));
+
+    if (castedData?.code) {
+      setDefaultCountry(castedData.code as CountryCode);
+    }
+    // dispatch(countryActions.getPhoneList(castedData?.code as string));
   };
 
   const subtotalItem = (cartItem: ICartItem) =>
@@ -240,7 +263,7 @@ const CheckoutPage = () => {
           }}
         />
         <Stack direction={"row"}>
-          <AppFormAutocomplete
+          {/* <AppFormAutocomplete
             width={"12%"}
             label={"Phone"}
             options={
@@ -289,6 +312,12 @@ const CheckoutPage = () => {
             textfieldProps={{
               helperText: errors?.phone?.message as string,
             }}
+          /> */}
+          <AppFormPhone
+            control={control}
+            label="phone"
+            name="phone"
+            defaultCountry={defaultCountry}
           />
         </Stack>
         <AppFormTextField
@@ -307,7 +336,7 @@ const CheckoutPage = () => {
             },
           }}
           textfieldProps={{
-            helperText: errors?.email?.message as string,
+            helperText: errors?.emailAddress?.message as string,
           }}
         />
         <AppFormTextField
