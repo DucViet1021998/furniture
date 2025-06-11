@@ -1,5 +1,6 @@
 import {
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   FormLabelProps,
   Radio,
@@ -16,6 +17,8 @@ import {
   ControllerProps,
   FieldPath,
   FieldValues,
+  Path,
+  RegisterOptions,
 } from "react-hook-form";
 
 const AppFormControlRadio = <T extends FieldValues>({
@@ -23,6 +26,8 @@ const AppFormControlRadio = <T extends FieldValues>({
   name,
   radioList = [],
   controlProps,
+  rules,
+  helperText,
   onChangeValueForm,
   radioProps,
   defaultValue,
@@ -36,11 +41,11 @@ const AppFormControlRadio = <T extends FieldValues>({
     <Stack {...otherProps}>
       {label && <FormLabel {...formLabelProps}>{label}</FormLabel>}
       <Controller
+        rules={rules}
         name={name}
         control={control}
         render={({ field: { onChange, ...otherFieldProps } }) => (
           <RadioGroup
-            row
             onChange={(_, value) => {
               if (onChangeValueForm instanceof Function)
                 onChangeValueForm(value);
@@ -72,6 +77,13 @@ const AppFormControlRadio = <T extends FieldValues>({
         )}
         {...controlProps}
       />
+      <FormHelperText
+        sx={{
+          color: "red",
+        }}
+      >
+        {helperText}
+      </FormHelperText>
     </Stack>
   );
 };
@@ -85,6 +97,11 @@ type AppFormControlRadioProps<T extends FieldValues> = StackProps & {
   control: Control<any, object>;
   name: FieldPath<T>;
   radioList: Array<RadioType>;
+  rules?: Omit<
+    RegisterOptions<T, Path<T>>,
+    "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
+  >;
+  helperText?: React.ReactNode;
 
   radioProps?: RadioProps & RefAttributes<HTMLInputElement>;
   controlProps?: Omit<ControllerProps, "render" | "name" | "control">;

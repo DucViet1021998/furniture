@@ -20,3 +20,6 @@ export const PRODUCT_TYPE = `${SETTING}/product-type`;
 
 // cart
 export const CART_PAGE = "/cart";
+
+// checkout
+export const CHECKOUT_PAGE = "/checkout";

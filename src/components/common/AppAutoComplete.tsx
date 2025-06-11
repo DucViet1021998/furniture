@@ -66,7 +66,7 @@ const AppAutoComplete = forwardRef(
         sx={{
           "& .MuiInputBase-root": {
             py: "0 !important",
-            minHeight: 36,
+            minHeight: 60,
             height: "fit-content !important",
           },
           "&.MuiAutocomplete-hasClearIcon .MuiOutlinedInput-root.MuiInputBase-sizeSmall":

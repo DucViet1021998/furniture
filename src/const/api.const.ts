@@ -15,5 +15,10 @@ export const STT_NOT_MODIFIED = 304;
 export const GET_PRODUCT_HOME = "/products/home-page";
 export const GET_PRODUCT_LIST = "/products";
 export const GET_PRODUCT_DETAIL = `/products/slug/{slug}`;
-
 export const POST_PRODUCT_HOME = "/contact/customer";
+
+// Checkout
+export const GET_COUNTRY_LIST = `/countries`;
+export const GET_PROVINCE_LIST = `/countries/provinces`;
+export const GET_PHONE_LIST = `/countries/phone`;
+export const POST_CHECKOUT = `/checkout`;
