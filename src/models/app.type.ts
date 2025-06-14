@@ -94,3 +94,29 @@ export interface IPaginationList<T> {
   currentPage: number;
   totalPages: number;
 }
+
+export enum PaymentMethodEnum {
+  DirectBankTransfer = 1,
+  CashOnDelivery = 2,
+}
+
+export interface CreateCheckoutModel {
+  firstname: string;
+  lastname: string;
+  companyName?: string;
+  countryCode: string;
+  streetAddress: string;
+  city: string;
+  province: string;
+  zipCode: string;
+  phone: string;
+  email: string;
+  total: number;
+  paymentMethod: PaymentMethodEnum;
+  products: CheckoutProductModel[];
+}
+
+export interface CheckoutProductModel {
+  productId: string;
+  quantity: number;
+}

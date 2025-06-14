@@ -1,7 +1,7 @@
 "use client";
 
 import { InputLabel, InputLabelProps, Stack, StackProps } from "@mui/material";
-import React, { memo, JSX } from "react";
+import React, { JSX, memo } from "react";
 import {
   Control,
   Controller,

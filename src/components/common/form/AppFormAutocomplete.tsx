@@ -1,7 +1,7 @@
 "use client";
 
 import { InputLabel, InputLabelProps, Stack, StackProps } from "@mui/material";
-import { ReactNode, memo, JSX } from "react";
+import { JSX, ReactNode, memo } from "react";
 import {
   Control,
   Controller,
@@ -35,8 +35,6 @@ const AppFormAutocomplete = <T extends FieldValues>({
     <Stack
       spacing={0.5}
       alignItems="center"
-      justifyContent="center"
-      width="100%"
       direction={direction}
       {...otherProps}
     >
@@ -52,14 +50,7 @@ const AppFormAutocomplete = <T extends FieldValues>({
           {label}
         </InputLabel>
       )}
-      <Stack
-        alignItems="center"
-        direction="row"
-        flex={1}
-        minHeight={0}
-        minWidth={0}
-        width={"100%"}
-      >
+      <Stack direction="row" minHeight={0} minWidth={0} width={"100%"}>
         <Controller
           control={control}
           name={name}
@@ -68,7 +59,7 @@ const AppFormAutocomplete = <T extends FieldValues>({
             return (
               <AppAutoComplete
                 {...restField}
-                value={value}
+                value={value ?? null}
                 disableCloseOnSelect={isMultiple}
                 multiple={isMultiple}
                 options={options}

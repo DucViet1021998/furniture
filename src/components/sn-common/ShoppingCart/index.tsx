@@ -1,7 +1,7 @@
 "use-client";
 
 import { CloseCartIcon } from "@/components/icons";
-import { CART_PAGE } from "@/const/path.const";
+import { CART_PAGE, CHECKOUT_PAGE } from "@/const/path.const";
 import { cartActions, useAppDispatch, useAppSelector } from "@/redux-store";
 import { ICartItem } from "@/redux-store/cart.slice";
 import { FormatUtils } from "@/utils";
@@ -54,6 +54,11 @@ const ShoppingCart = () => {
   const handleNavigateToCartPage = () => {
     dispatch(cartActions.isShowCart(false));
     router.push(CART_PAGE);
+  };
+
+  const handleNavigateToCheckoutPage = () => {
+    dispatch(cartActions.isShowCart(false));
+    router.push(CHECKOUT_PAGE);
   };
 
   return (
@@ -147,6 +152,7 @@ const ShoppingCart = () => {
                 borderRadius: 99,
               }}
               variant="outlined"
+              onClick={handleNavigateToCheckoutPage}
             >
               Checkout
             </Button>

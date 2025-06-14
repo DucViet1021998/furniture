@@ -1,9 +1,10 @@
 "use client";
 
 import { AppBreadCrumb } from "@/components/common";
-import { getDiscountedPrice } from "@/components/sn-common/ShoppingCart";
 import { TrashIcon } from "@/components/icons";
+import { getDiscountedPrice } from "@/components/sn-common/ShoppingCart";
 import { ServiceSection } from "@/components/sn-shop";
+import { CHECKOUT_PAGE } from "@/const/path.const";
 import { cartActions, useAppDispatch, useAppSelector } from "@/redux-store";
 import { ICartItem } from "@/redux-store/cart.slice";
 import { FormatUtils } from "@/utils";
@@ -21,6 +22,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { shallowEqual } from "react-redux";
 
@@ -56,14 +58,23 @@ const CartPage = () => {
     }, 0);
   }, [cartItems]);
 
-  const handleChangeQuantity = (newValue: string, cartItem: ICartItem) => {
+  const handleChangeQuantity = (newQuantity: string, cartItem: ICartItem) => {
+    let newQuantityNum: number = +newQuantity;
+    // prevent re-render when the new quantity equal or less than zero
+    if (newQuantityNum <= 0) return;
     // set min value equal 1
-    if (!+newValue) {
-      newValue = "1";
+    if (!newQuantityNum) {
+      newQuantityNum = 1;
     }
     dispatch(
-      cartActions.changeQuantity({ ...cartItem, quantity: Number(newValue) })
+      cartActions.updateCartItem({ ...cartItem, quantity: newQuantityNum })
     );
+  };
+
+  const router = useRouter();
+
+  const handleNavigateToCheckoutPage = () => {
+    router.push(CHECKOUT_PAGE);
   };
 
   return (
@@ -285,6 +296,7 @@ const CartPage = () => {
                   borderRadius: 99,
                 }}
                 variant="outlined"
+                onClick={handleNavigateToCheckoutPage}
               >
                 Checkout
               </Button>
