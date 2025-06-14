@@ -5,7 +5,6 @@ import AppFormControlRadio from "@/components/common/form/AppFormControlRadio";
 import AppFormPhone from "@/components/common/form/AppFormPhone";
 import AppFormTextField from "@/components/common/form/AppFormTextField";
 import { getDiscountedPrice } from "@/components/sn-common/ShoppingCart";
-import { AppConstant } from "@/const";
 import {
   CheckoutProductModel,
   CreateCheckoutModel,
@@ -20,10 +19,10 @@ import {
 import { ICartItem } from "@/redux-store/cart.slice";
 import { FormatUtils } from "@/utils";
 import { Button, Divider, Stack, Typography } from "@mui/material";
+import { CountryCode } from "libphonenumber-js/core";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { shallowEqual } from "react-redux";
-import { CountryCode } from "libphonenumber-js/core";
 
 const CONTENT_TYPE_LIST = [
   {
@@ -39,11 +38,10 @@ const CONTENT_TYPE_LIST = [
 const CheckoutPage = () => {
   const dispatch = useAppDispatch();
   const [defaultCountry, setDefaultCountry] = useState<CountryCode>("VN");
-  const { countries, provinces, phones, cartItems } = useAppSelector(
+  const { countries, provinces, cartItems } = useAppSelector(
     (state) => ({
       countries: state.countryReducer.countries,
       provinces: state.countryReducer.provinces,
-      phones: state.countryReducer.phones,
       cartItems: state.cartReducer.cartItems,
     }),
     shallowEqual
@@ -90,8 +88,7 @@ const CheckoutPage = () => {
         quantity: item.quantity,
       })) as CheckoutProductModel[],
     };
-    console.log(payload);
-    // dispatch(checkoutActions.placeOrder(payload));
+    dispatch(checkoutActions.placeOrder(payload));
   };
 
   useEffect(() => {
@@ -109,7 +106,6 @@ const CheckoutPage = () => {
     if (castedData?.code) {
       setDefaultCountry(castedData.code as CountryCode);
     }
-    // dispatch(countryActions.getPhoneList(castedData?.code as string));
   };
 
   const subtotalItem = (cartItem: ICartItem) =>
@@ -262,64 +258,16 @@ const CheckoutPage = () => {
             helperText: errors?.zipCode?.message as string,
           }}
         />
-        <Stack direction={"row"}>
-          {/* <AppFormAutocomplete
-            width={"12%"}
-            label={"Phone"}
-            options={
-              phones
-                .map((item) => item.phone)
-                .flat()
-                .map((phone) => ({
-                  code: phone,
-                  label: phone.toString(),
-                })) as IOption[]
-            }
-            control={control}
-            name={"phoneCode"}
-            sx={{
-              paddingBottom: 2,
-            }}
-            rules={{
-              required: "Phone code is required",
-            }}
-            autocompleteProps={{
-              textFieldProps: {
-                helperText: errors?.phoneCode?.message as string,
-              },
-            }}
-          />
-          <AppFormTextField
-            marginTop={"27px"}
-            width={"88%"}
-            control={control}
-            name={"phone"}
-            sx={{
-              paddingBottom: 2,
-            }}
-            rules={{
-              required: "Vui lòng nhập số điện thoại",
-              validate: (value) => {
-                return (
-                  !value ||
-                  [AppConstant.PHONE_REGEX].every((pattern) =>
-                    pattern.test(value)
-                  ) ||
-                  "Sai định dạng số điện thoại!"
-                );
-              },
-            }}
-            textfieldProps={{
-              helperText: errors?.phone?.message as string,
-            }}
-          /> */}
-          <AppFormPhone
-            control={control}
-            label="phone"
-            name="phone"
-            defaultCountry={defaultCountry}
-          />
-        </Stack>
+        <AppFormPhone
+          control={control}
+          label="Phone"
+          name="phone"
+          defaultCountry={defaultCountry}
+          sx={{
+            paddingBottom: 2,
+            height: "87px",
+          }}
+        />
         <AppFormTextField
           control={control}
           name={"emailAddress"}

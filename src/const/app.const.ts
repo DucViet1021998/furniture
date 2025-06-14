@@ -1,7 +1,6 @@
 import {
   ABOUT_PAGE,
   CART_PAGE,
-  CHECKOUT_PAGE,
   CONTACT_PAGE,
   HOME_PAGE,
   SHOP_PAGE,
@@ -27,10 +26,6 @@ export const routes = [
   {
     label: "Cart",
     path: CART_PAGE,
-  },
-  {
-    label: "Checkout",
-    path: CHECKOUT_PAGE,
   },
 ];
 

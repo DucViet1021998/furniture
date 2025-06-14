@@ -1,6 +1,7 @@
 "use client";
 
 import { InputLabel, InputLabelProps, Stack, StackProps } from "@mui/material";
+import { CountryCode, E164Number } from "libphonenumber-js/core";
 import React, { JSX, memo } from "react";
 import {
   Control,
@@ -11,7 +12,6 @@ import {
 } from "react-hook-form";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css"; // Đảm bảo style được import
-import { CountryCode, E164Number } from "libphonenumber-js/core";
 
 const AppFormPhone = <T extends FieldValues>({
   label,
@@ -27,12 +27,7 @@ const AppFormPhone = <T extends FieldValues>({
   ...otherProps
 }: AppFormPhoneProps<T>): JSX.Element => {
   return (
-    <Stack
-      spacing={0.5}
-      alignItems={"center"}
-      direction={direction}
-      {...otherProps}
-    >
+    <Stack spacing={0.5} direction={direction} {...otherProps}>
       {label && (
         <InputLabel
           required={Boolean(rules?.required)}
@@ -40,6 +35,7 @@ const AppFormPhone = <T extends FieldValues>({
           {...labelProps}
           sx={{
             width: direction === "row" ? "unset" : "100%",
+            height: "23px",
             ...labelProps?.sx,
           }}
         >
