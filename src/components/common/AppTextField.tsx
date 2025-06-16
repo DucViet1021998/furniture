@@ -59,7 +59,7 @@ const AppTextField = forwardRef(
             borderColor: "primary.main",
           },
           ".MuiOutlinedInput-notchedOutline": {
-            borderColor: "border.main",
+            borderColor: "#9F9F9F",
           },
           ".MuiInputBase-root.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline":
             {
@@ -77,13 +77,13 @@ const AppTextField = forwardRef(
             },
           },
           "& .MuiFormLabel-root, & .MuiInputLabel-shrink": {
-            fontWeight: "400 !important",
+            fontWeight: "500 !important",
           },
           textarea: {
             pl: 1,
           },
           input: {
-            height: "1.3575em",
+            height: "2.688em",
             px: 1,
             borderRadius: "4px",
             boxShadow: "0 0 0 1000px white inset !important",
@@ -95,6 +95,9 @@ const AppTextField = forwardRef(
               WebkitTextFillColor: "#333333 !important",
               caretColor: "#333333 !important",
             },
+          },
+          ".MuiFormHelperText-root": {
+            color: "red",
           },
           ...sx,
         }}

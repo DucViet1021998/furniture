@@ -1,6 +1,8 @@
 "use client";
 
+import { AppHTMLRender } from "@/components/common";
 import { IProduct } from "@/models";
+import { FormatUtils } from "@/utils";
 import {
   Box,
   Button,
@@ -11,13 +13,9 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import ProductBreadcrumb from "./ProductBreadcrumb";
-import ImageGallery from "react-image-gallery";
-import { FormatUtils } from "@/utils";
 import { useMemo, useState } from "react";
-import { AppHTMLRender } from "@/components/common";
-import RelateProductSection from "@/components/sn-common/RelateProductSection";
-import { ProductSection } from "@/components/sn-home";
+import ImageGallery from "react-image-gallery";
+import ProductBreadcrumb from "./ProductBreadcrumb";
 
 const sizeOptions = ["L", "XL", "XS"];
 const ProductDetailPage = ({ data }: { data: IProduct }) => {
@@ -113,7 +111,7 @@ const ProductDetailPage = ({ data }: { data: IProduct }) => {
               <Stack spacing={1}>
                 <Typography>Color</Typography>
                 <Stack direction="row" spacing={2}>
-                  {data.colors.map((color) => (
+                  {data.colors?.map((color) => (
                     <Box
                       key={color}
                       onClick={() => setActiveColor(color)}
@@ -299,7 +297,7 @@ export default ProductDetailPage;
 export const convertImageGallery = (data: any[]) => {
   if (!data.length) return [];
 
-  return data.map((item) => ({
+  return data?.map((item) => ({
     original: item.url,
     thumbnail: item.url,
   }));

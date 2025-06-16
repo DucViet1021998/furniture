@@ -1,6 +1,7 @@
 "use client";
 
 import { InputLabel, InputLabelProps, Stack, StackProps } from "@mui/material";
+import { CountryCode, E164Number } from "libphonenumber-js/core";
 import React, { JSX, memo } from "react";
 import {
   Control,
@@ -9,9 +10,10 @@ import {
   FieldPath,
   FieldValues,
 } from "react-hook-form";
-import AppTextField, { AppTextFieldProps } from "../AppTextField";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
-const AppFormTextField = <T extends FieldValues>({
+const AppFormPhone = <T extends FieldValues>({
   label,
   control,
   name,
@@ -21,15 +23,11 @@ const AppFormTextField = <T extends FieldValues>({
   textfieldProps,
   onChangeValueForm,
   direction = "column",
+  defaultCountry,
   ...otherProps
-}: AppFormTextFieldProps<T>): JSX.Element => {
+}: AppFormPhoneProps<T>): JSX.Element => {
   return (
-    <Stack
-      spacing={0.5}
-      alignItems={"center"}
-      direction={direction}
-      {...otherProps}
-    >
+    <Stack spacing={0.5} direction={direction} {...otherProps}>
       {label && (
         <InputLabel
           required={Boolean(rules?.required)}
@@ -37,26 +35,30 @@ const AppFormTextField = <T extends FieldValues>({
           {...labelProps}
           sx={{
             width: direction === "row" ? "unset" : "100%",
+            height: "23px",
             ...labelProps?.sx,
           }}
         >
           {label}
         </InputLabel>
       )}
+
       <Controller
-        control={control}
         name={name}
+        control={control}
         rules={rules}
         {...controlProps}
-        render={({ field: { onChange, ...restField } }) => (
-          <AppTextField
+        render={({ field: { onChange, value, ref } }) => (
+          <PhoneInput
+            defaultCountry={defaultCountry}
             id={name}
-            onChange={(event) => {
-              onChange(event);
-              onChangeValueForm?.(event);
+            value={typeof value === "string" ? value : value?.toString?.()}
+            onChange={(phone) => {
+              onChange(phone);
+              onChangeValueForm?.(phone);
             }}
-            {...restField}
             {...textfieldProps}
+            inputRef={ref}
           />
         )}
       />
@@ -64,18 +66,20 @@ const AppFormTextField = <T extends FieldValues>({
   );
 };
 
-export type AppFormTextFieldProps<T extends FieldValues> = StackProps & {
+export type AppFormPhoneProps<T extends FieldValues> = StackProps & {
   label?: string;
   control: Control<T>;
   name: FieldPath<T>;
   controlProps?: Omit<ControllerProps<T>, "render" | "name" | "control">;
   labelProps?: InputLabelProps;
-  textfieldProps?: AppTextFieldProps;
-  onChangeValueForm?: (
-    event?: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
+  defaultCountry?: CountryCode;
+  textfieldProps?: Omit<
+    React.ComponentPropsWithoutRef<typeof PhoneInput>,
+    "value" | "onChange" | "defaultCountry" | "inputComponent"
+  >;
+  onChangeValueForm?: (value?: E164Number) => void;
 } & Pick<ControllerProps<T>, "rules">;
 
-export default memo(AppFormTextField) as <T extends FieldValues>(
-  props: AppFormTextFieldProps<T>
+export default memo(AppFormPhone) as <T extends FieldValues>(
+  props: AppFormPhoneProps<T>
 ) => JSX.Element;

@@ -66,7 +66,7 @@ const AppAutoComplete = forwardRef(
         sx={{
           "& .MuiInputBase-root": {
             py: "0 !important",
-            minHeight: 36,
+            minHeight: 60,
             height: "fit-content !important",
           },
           "&.MuiAutocomplete-hasClearIcon .MuiOutlinedInput-root.MuiInputBase-sizeSmall":
@@ -189,7 +189,7 @@ export const mapIdsToOptions = (
   source: IOption[] = []
 ) =>
   ids
-    .map((id) => source.find((opt) => opt.id === id))
+    ?.map((id) => source.find((opt) => opt.id === id))
     .filter((opt): opt is IOption => Boolean(opt));
 
 export default memo(AppAutoComplete);

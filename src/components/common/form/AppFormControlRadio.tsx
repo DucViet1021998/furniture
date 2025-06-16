@@ -1,5 +1,6 @@
 import {
   FormControlLabel,
+  FormHelperText,
   FormLabel,
   FormLabelProps,
   Radio,
@@ -11,11 +12,11 @@ import {
 } from "@mui/material";
 import { RefAttributes, memo } from "react";
 import {
-  Control,
   Controller,
-  ControllerProps,
   FieldPath,
   FieldValues,
+  Path,
+  RegisterOptions,
 } from "react-hook-form";
 
 const AppFormControlRadio = <T extends FieldValues>({
@@ -23,6 +24,8 @@ const AppFormControlRadio = <T extends FieldValues>({
   name,
   radioList = [],
   controlProps,
+  rules,
+  helperText,
   onChangeValueForm,
   radioProps,
   defaultValue,
@@ -36,11 +39,11 @@ const AppFormControlRadio = <T extends FieldValues>({
     <Stack {...otherProps}>
       {label && <FormLabel {...formLabelProps}>{label}</FormLabel>}
       <Controller
+        rules={rules}
         name={name}
         control={control}
         render={({ field: { onChange, ...otherFieldProps } }) => (
           <RadioGroup
-            row
             onChange={(_, value) => {
               if (onChangeValueForm instanceof Function)
                 onChangeValueForm(value);
@@ -49,7 +52,7 @@ const AppFormControlRadio = <T extends FieldValues>({
             {...otherFieldProps}
             {...radioGroupProps}
           >
-            {radioList.map((item) => {
+            {radioList?.map((item) => {
               const isDisabled = isDisableValue?.some(
                 (val) => val == item.value
               );
@@ -72,6 +75,13 @@ const AppFormControlRadio = <T extends FieldValues>({
         )}
         {...controlProps}
       />
+      <FormHelperText
+        sx={{
+          color: "red",
+        }}
+      >
+        {helperText}
+      </FormHelperText>
     </Stack>
   );
 };
@@ -82,12 +92,17 @@ type RadioType = {
 };
 
 type AppFormControlRadioProps<T extends FieldValues> = StackProps & {
-  control: Control<any, object>;
+  control: any;
   name: FieldPath<T>;
   radioList: Array<RadioType>;
+  rules?: Omit<
+    RegisterOptions<T, Path<T>>,
+    "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
+  >;
+  helperText?: React.ReactNode;
 
   radioProps?: RadioProps & RefAttributes<HTMLInputElement>;
-  controlProps?: Omit<ControllerProps, "render" | "name" | "control">;
+  controlProps?: any;
   label?: string;
   formLabelProps?: FormLabelProps;
   radioGroupProps?: RadioGroupProps;

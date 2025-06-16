@@ -159,7 +159,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
         direction="row"
         spacing={2}
       >
-        {icons.map(renderIconWithLabel)}
+        {icons?.map(renderIconWithLabel)}
       </Stack>
       {productLabel.label && (
         <Box

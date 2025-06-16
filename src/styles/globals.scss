@@ -45,3 +45,23 @@ body {
   flex-direction: column;
   height: calc(100vh - 56px);
 }
+
+.PhoneInput {
+  height: 60px;
+  border: 1.5px solid #9f9f9f;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 16px !important;
+}
+
+.PhoneInput:has(.PhoneInputInput:focus) {
+  padding: 7.5px;
+  border: 2px solid #b88e2f !important;
+}
+
+.PhoneInputInput:focus {
+  padding: 8px;
+  border: unset;
+  outline: none !important;
+  box-shadow: none !important;
+}
