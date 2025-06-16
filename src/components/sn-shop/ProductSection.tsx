@@ -13,7 +13,7 @@ const ProductSection = ({
   return (
     <Container>
       <Grid2 container mt={4} columnSpacing={2} rowSpacing={4}>
-        {data?.payload.data??.map((product, index) => (
+        {data?.payload.data?.map((product, index) => (
           <Grid2 size={3} key={index}>
             <ProductCard data={product} />
           </Grid2>
