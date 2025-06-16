@@ -189,7 +189,7 @@ export const mapIdsToOptions = (
   source: IOption[] = []
 ) =>
   ids
-    .map((id) => source.find((opt) => opt.id === id))
+    ?.map((id) => source.find((opt) => opt.id === id))
     .filter((opt): opt is IOption => Boolean(opt));
 
 export default memo(AppAutoComplete);

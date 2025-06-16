@@ -11,7 +11,7 @@ import {
   FieldValues,
 } from "react-hook-form";
 import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css"; // Đảm bảo style được import
+import "react-phone-number-input/style.css";
 
 const AppFormPhone = <T extends FieldValues>({
   label,
@@ -54,7 +54,7 @@ const AppFormPhone = <T extends FieldValues>({
             id={name}
             value={typeof value === "string" ? value : value?.toString?.()}
             onChange={(phone) => {
-              onChange(phone); //
+              onChange(phone);
               onChangeValueForm?.(phone);
             }}
             {...textfieldProps}

@@ -12,9 +12,7 @@ import {
 } from "@mui/material";
 import { RefAttributes, memo } from "react";
 import {
-  Control,
   Controller,
-  ControllerProps,
   FieldPath,
   FieldValues,
   Path,
@@ -54,7 +52,7 @@ const AppFormControlRadio = <T extends FieldValues>({
             {...otherFieldProps}
             {...radioGroupProps}
           >
-            {radioList.map((item) => {
+            {radioList?.map((item) => {
               const isDisabled = isDisableValue?.some(
                 (val) => val == item.value
               );

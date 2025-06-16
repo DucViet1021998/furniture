@@ -95,7 +95,7 @@ const SlideSection = () => {
             spaceBetween={-468}
             onSlideChange={handleChangeSlide}
           >
-            {slides.map((slide, index) => (
+            {slides?.map((slide, index) => (
               <SwiperSlide key={index}>
                 <AppImage
                   width={activeSlide === index ? 404 : 372}

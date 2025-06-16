@@ -113,7 +113,7 @@ const ShoppingCart = () => {
               overflowY: "auto",
             }}
           >
-            {cartItems.map((item) => (
+            {cartItems?.map((item) => (
               <CartItemCard key={item._id} cartItem={item} />
             ))}
           </Box>

@@ -18,7 +18,7 @@ import {
 } from "@/redux-store";
 import { ICartItem } from "@/redux-store/cart.slice";
 import { FormatUtils } from "@/utils";
-import { Button, Divider, Stack, Typography } from "@mui/material";
+import { Button, Divider, Grid2, Stack, Typography } from "@mui/material";
 import { CountryCode } from "libphonenumber-js/core";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -50,23 +50,11 @@ const CheckoutPage = () => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
+    setValue,
   } = useForm({
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      companyName: "",
-      country: undefined, // hoặc { code: "VN", label: "Vietnam" } nếu bạn muốn chọn sẵn
-      streetAddress: "",
-      city: "",
-      province: undefined,
-      zipCode: "",
-      phone: "",
-      phoneCode: { code: "+84", label: "+84" },
-      emailAddress: "",
-      additionalInformation: "",
-      paymentMethod: PaymentMethodEnum.DirectBankTransfer,
-    },
+    defaultValues: INIT_VALUE,
   });
 
   const handleSubmitData = (valueForm: any) => {
@@ -83,12 +71,19 @@ const CheckoutPage = () => {
       email: valueForm.emailAddress,
       total: subtotal,
       paymentMethod: valueForm.paymentMethod,
-      products: cartItems.map((item) => ({
+      products: cartItems?.map((item) => ({
         productId: item._id,
         quantity: item.quantity,
       })) as CheckoutProductModel[],
     };
-    dispatch(checkoutActions.placeOrder(payload));
+    dispatch(
+      checkoutActions.placeOrder({
+        payload,
+        onSuccess: () => {
+          reset(INIT_VALUE);
+        },
+      })
+    );
   };
 
   useEffect(() => {
@@ -101,6 +96,7 @@ const CheckoutPage = () => {
 
   const handleChangeCountry = (data?: IOption | IOption[]) => {
     const castedData = data as IOption | undefined;
+    setValue("province", undefined);
     dispatch(countryActions.getProvinceList(castedData?.code as string));
 
     if (castedData?.code) {
@@ -121,7 +117,6 @@ const CheckoutPage = () => {
 
   return (
     <Stack
-      height={"1114px"}
       paddingX={"100px"}
       paddingY={"40px"}
       width={"100%"}
@@ -130,172 +125,162 @@ const CheckoutPage = () => {
       direction={"row"}
     >
       {/* Billing Details */}
-      <Stack width={"50%"}>
-        <Typography fontWeight={600} fontSize={"36px"} lineHeight={"100%"}>
-          Billing Details
-        </Typography>
-        <Stack direction={"row"} paddingBottom={2}>
+      <Grid2 container columnSpacing={4} rowSpacing={3} width="50%">
+        <Grid2 size={12}>
+          <Typography
+            fontWeight={600}
+            fontSize={"36px"}
+            pb={2}
+            lineHeight={"100%"}
+          >
+            Billing Details
+          </Typography>
+        </Grid2>
+
+        <Grid2 size={6}>
           <AppFormTextField
-            width={"50%"}
-            label={"First Name"}
-            sx={{
-              paddingRight: "10px",
-            }}
+            label="First Name"
             control={control}
-            name={"firstName"}
-            rules={{
-              required: "First Name is required",
-            }}
+            name="firstName"
+            rules={{ required: "First Name is required" }}
             textfieldProps={{
               helperText: errors?.firstName?.message as string,
             }}
           />
+        </Grid2>
+        <Grid2 size={6}>
           <AppFormTextField
-            width={"50%"}
-            label={"Last Name"}
+            label="Last Name"
             control={control}
-            name={"lastName"}
-            rules={{
-              required: "Last Name is required",
-            }}
+            name="lastName"
+            rules={{ required: "Last Name is required" }}
             textfieldProps={{
               helperText: errors?.lastName?.message as string,
             }}
           />
-        </Stack>
-        <AppFormTextField
-          control={control}
-          name={"companyName"}
-          label={"Company Name (Optional)"}
-          sx={{
-            paddingBottom: 2,
-          }}
-        />
-        <AppFormAutocomplete
-          label={"Country / Region"}
-          options={
-            countries.map((country) => ({
-              code: country.code,
-              label: country.name,
-            })) as IOption[]
-          }
-          control={control}
-          name={"country"}
-          sx={{
-            paddingBottom: 2,
-          }}
-          onChangeValueForm={(data) => handleChangeCountry(data)}
-          rules={{
-            required: "Country is required",
-          }}
-          autocompleteProps={{
-            textFieldProps: {
-              helperText: errors?.country?.message as string,
-            },
-          }}
-        />
-        <AppFormTextField
-          control={control}
-          name={"streetAddress"}
-          label={"Street address"}
-          sx={{
-            paddingBottom: 2,
-          }}
-          rules={{
-            required: "Street Address is required",
-          }}
-          textfieldProps={{
-            helperText: errors?.streetAddress?.message as string,
-          }}
-        />
-        <AppFormTextField
-          label={"Town / City"}
-          control={control}
-          name={"city"}
-          sx={{
-            paddingBottom: 2,
-          }}
-          rules={{
-            required: "City / Town is required",
-          }}
-          textfieldProps={{
-            helperText: errors?.city?.message as string,
-          }}
-        />
-        <AppFormAutocomplete
-          label={"Province"}
-          options={
-            provinces.map((province) => ({
-              code: province.code,
-              label: province.name,
-            })) as IOption[]
-          }
-          control={control}
-          name={"province"}
-          sx={{
-            paddingBottom: 2,
-          }}
-          rules={{
-            required: "Province is required",
-          }}
-          autocompleteProps={{
-            textFieldProps: {
-              helperText: errors?.province?.message as string,
-            },
-          }}
-        />
-        <AppFormTextField
-          control={control}
-          name={"zipCode"}
-          label={"ZIP code"}
-          sx={{
-            paddingBottom: 2,
-          }}
-          rules={{
-            required: "ZIP code is required",
-          }}
-          textfieldProps={{
-            helperText: errors?.zipCode?.message as string,
-          }}
-        />
-        <AppFormPhone
-          control={control}
-          label="Phone"
-          name="phone"
-          defaultCountry={defaultCountry}
-          sx={{
-            paddingBottom: 2,
-            height: "87px",
-          }}
-        />
-        <AppFormTextField
-          control={control}
-          name={"emailAddress"}
-          label={"Email address"}
-          sx={{
-            paddingBottom: 2,
-          }}
-          rules={{
-            required: "Email address is required",
-            pattern: {
-              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-              message:
-                "Email must contains the @ symbol. Ex: example@gmail.com",
-            },
-          }}
-          textfieldProps={{
-            helperText: errors?.emailAddress?.message as string,
-          }}
-        />
-        <AppFormTextField
-          control={control}
-          name={"additionalInformation"}
-          label={"Additional information"}
-          sx={{
-            paddingBottom: 2,
-          }}
-        />
-      </Stack>
+        </Grid2>
+
+        <Grid2 size={12}>
+          <AppFormTextField
+            control={control}
+            name="companyName"
+            label="Company Name (Optional)"
+          />
+        </Grid2>
+
+        <Grid2 size={12}>
+          <AppFormAutocomplete
+            label="Country / Region"
+            options={
+              countries?.map((c) => ({
+                code: c.code,
+                label: c.name,
+              })) as IOption[]
+            }
+            control={control}
+            name="country"
+            onChangeValueForm={(data) => handleChangeCountry(data)}
+            rules={{ required: "Country is required" }}
+            autocompleteProps={{
+              textFieldProps: {
+                helperText: errors?.country?.message as string,
+              },
+            }}
+          />
+        </Grid2>
+
+        <Grid2 size={12}>
+          <AppFormTextField
+            control={control}
+            name="streetAddress"
+            label="Street address"
+            rules={{ required: "Street Address is required" }}
+            textfieldProps={{
+              helperText: errors?.streetAddress?.message as string,
+            }}
+          />
+        </Grid2>
+
+        <Grid2 size={12}>
+          <AppFormTextField
+            label="Town / City"
+            control={control}
+            name="city"
+            rules={{ required: "City / Town is required" }}
+            textfieldProps={{
+              helperText: errors?.city?.message as string,
+            }}
+          />
+        </Grid2>
+
+        <Grid2 size={12}>
+          <AppFormAutocomplete
+            label="Province"
+            options={
+              provinces?.map((p) => ({
+                code: p.code,
+                label: p.name,
+              })) as IOption[]
+            }
+            control={control}
+            name="province"
+            rules={{ required: "Province is required" }}
+            autocompleteProps={{
+              textFieldProps: {
+                helperText: errors?.province?.message as string,
+              },
+            }}
+          />
+        </Grid2>
+
+        <Grid2 size={12}>
+          <AppFormTextField
+            control={control}
+            name="zipCode"
+            label="ZIP code"
+            rules={{ required: "ZIP code is required" }}
+            textfieldProps={{
+              helperText: errors?.zipCode?.message as string,
+            }}
+          />
+        </Grid2>
+
+        <Grid2 size={12}>
+          <AppFormPhone
+            control={control}
+            label="Phone"
+            name="phone"
+            defaultCountry={defaultCountry}
+          />
+        </Grid2>
+
+        <Grid2 size={12}>
+          <AppFormTextField
+            control={control}
+            name="emailAddress"
+            label="Email address"
+            rules={{
+              required: "Email address is required",
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                message:
+                  "Email must contains the @ symbol. Ex: example@gmail.com",
+              },
+            }}
+            textfieldProps={{
+              helperText: errors?.emailAddress?.message as string,
+            }}
+          />
+        </Grid2>
+
+        <Grid2 size={12}>
+          <AppFormTextField
+            control={control}
+            name="additionalInformation"
+            label="Additional information"
+          />
+        </Grid2>
+      </Grid2>
       <Stack
         width={"50%"}
         paddingX={"100px"}
@@ -315,7 +300,7 @@ const CheckoutPage = () => {
             Subtotal
           </Typography>
         </Stack>
-        {cartItems.map((item) => (
+        {cartItems?.map((item) => (
           <Stack
             key={item._id}
             direction={"row"}
@@ -432,3 +417,19 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
+
+const INIT_VALUE = {
+  firstName: "",
+  lastName: "",
+  companyName: "",
+  country: undefined,
+  streetAddress: "",
+  city: "",
+  province: undefined,
+  zipCode: "",
+  phone: "",
+  phoneCode: { code: "+84", label: "+84" },
+  emailAddress: "",
+  additionalInformation: "",
+  paymentMethod: PaymentMethodEnum.DirectBankTransfer,
+};

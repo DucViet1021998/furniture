@@ -23,10 +23,6 @@ export const routes = [
     label: "Contact",
     path: CONTACT_PAGE,
   },
-  {
-    label: "Cart",
-    path: CART_PAGE,
-  },
 ];
 
 export const DEBOUNCE_TIME_IN_MILLISECOND = 500;

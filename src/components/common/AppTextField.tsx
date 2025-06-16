@@ -59,7 +59,7 @@ const AppTextField = forwardRef(
             borderColor: "primary.main",
           },
           ".MuiOutlinedInput-notchedOutline": {
-            borderColor: "border.main",
+            borderColor: "#9F9F9F",
           },
           ".MuiInputBase-root.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline":
             {
